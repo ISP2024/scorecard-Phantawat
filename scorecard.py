@@ -17,22 +17,32 @@ Observe how the type hint helps it perform static checking.
    Include the type of keys and values.
 
 """
+from abc import ABC
+from typing import Iterator, Iterable
 
 
-class Scorecard:
+class Scorecard(Iterable, ABC):
     """Accumulate scores and compute their average."""
 
     def __init__(self):
-        """Iniiialize a new Scorecard."""
-        self.scores = []
+        """Initialize a new Scorecard."""
+        self.scores: list = []
 
-    def add_score(self, score):
+    def __len__(self) -> int:
+        """Return the len of scores list."""
+        return len(self.scores)
+
+    def __iter__(self) -> Iterator:
+        """Return """
+        return iter(self.scores)
+
+    def add_score(self, score: float):
         """Add a score to the Scorecard."""
         self.scores.append(score)
 
-    def average(self):
+    def average(self) -> float:
         """Return the average of all scores, 0 if no scores."""
-        return sum(self.scores)/max(1,len(self.scores))
+        return sum(self.scores)/max(1, len(self.scores))
 
 
 def print_scores(score_card):
@@ -46,7 +56,7 @@ def print_scores(score_card):
         print(score)
 
 
-def ordinal(num):
+def ordinal(num: int) -> str:
     """Return the ordinal value of an integer; works for numbers up to 20.
 
     For examples: ordinal(1) is '1st', ordinal(2) is '2nd'.
@@ -60,10 +70,10 @@ if __name__ == "__main__":
     scorecard = Scorecard()
 
     print("Input 3 scores.")
-    for count in range(1,4):
+    for count in range(1, 4):
         score = input(f"input {ordinal(count)} score: ")
-        scorecard.add_score(score)
+        scorecard.add_score(float(score))
 
-    print("The average is " + scorecard.average())
+    print("The average is " + str(scorecard.average()))
 
     print_scores(scorecard)
